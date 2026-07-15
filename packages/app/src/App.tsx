@@ -7,13 +7,11 @@ import {
   CatalogIndexPage,
   catalogPlugin,
   EntityLayout,
-  EntityOverviewPage,
   EntitySwitch,
   isKind,
 } from '@backstage/plugin-catalog';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { userSettingsPlugin, UserSettingsPage } from '@backstage/plugin-user-settings';
-import { catalogReactPlugin } from '@backstage/plugin-catalog-react';
 
 import {
   MeteringSummaryCard,
@@ -24,20 +22,24 @@ import {
 } from '@internal/backstage-plugin-metering';
 import { createApiFactory, discoveryApiRef, fetchApiRef } from '@backstage/core-plugin-api';
 
-// ── Entity page ────────────────────────────────────────────────────────────
+const K8S_NS_ANNOTATION = 'backstage.io/kubernetes-namespace';
+
+const hasK8sAnnotation = (e: { metadata: { annotations?: Record<string, string> } }) =>
+  Boolean(e.metadata.annotations?.[K8S_NS_ANNOTATION]);
+
+// ── Entity page ─────────────────────────────────────────────────────────────
 
 const componentEntityPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
-      <Grid container spacing={3} alignItems="stretch">
-        <EntityOverviewPage />
-        {/* Metering cost summary card — only on entities with k8s annotation */}
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography variant="body2" color="textSecondary">
+            Entity overview
+          </Typography>
+        </Grid>
         <EntitySwitch>
-          <EntitySwitch.Case
-            if={e =>
-              Boolean(e.metadata.annotations?.['backstage.io/kubernetes-namespace'])
-            }
-          >
+          <EntitySwitch.Case if={hasK8sAnnotation}>
             <Grid item xs={12} md={4}>
               <MeteringSummaryCard />
             </Grid>
@@ -46,13 +48,8 @@ const componentEntityPage = (
       </Grid>
     </EntityLayout.Route>
 
-    {/* Metering tab — only on entities with k8s annotation */}
     <EntitySwitch>
-      <EntitySwitch.Case
-        if={e =>
-          Boolean(e.metadata.annotations?.['backstage.io/kubernetes-namespace'])
-        }
-      >
+      <EntitySwitch.Case if={hasK8sAnnotation}>
         <EntityLayout.Route path="/metering" title="Metering">
           <MeteringTabContent />
         </EntityLayout.Route>
@@ -64,7 +61,7 @@ const componentEntityPage = (
 const defaultEntityPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
-      <EntityOverviewPage />
+      <Typography variant="body2" color="textSecondary">Entity overview</Typography>
     </EntityLayout.Route>
   </EntityLayout>
 );
@@ -87,12 +84,7 @@ const app = createApp({
         meteringApiFactory.factory({ discoveryApi, fetchApi }),
     }),
   ],
-  plugins: [
-    catalogPlugin,
-    catalogReactPlugin,
-    userSettingsPlugin,
-    meteringPlugin,
-  ],
+  plugins: [catalogPlugin, userSettingsPlugin, meteringPlugin],
 });
 
 export default app.createRoot(
