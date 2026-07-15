@@ -13,13 +13,13 @@ import {
 import { Grid } from '@material-ui/core';
 import { userSettingsPlugin, UserSettingsPage } from '@backstage/plugin-user-settings';
 
-// Metering plugin — installed as a regular workspace package.
-// In standard Backstage, any change here requires a full image rebuild (~15-45 min).
-// In Red Hat Developer Hub, only the plugin OCI image is rebuilt (~2-4 min).
+// Metering plugin components — work as regular React components regardless of plugin system.
+// Note: meteringPlugin (createFrontendPlugin/NFS) is intentionally NOT passed to createApp()
+// because @backstage/app-defaults uses the old plugin system and mixing NFS plugins causes
+// a runtime crash. The API factory and components are registered manually below.
 import {
   MeteringSummaryCard,
   MeteringTabContent,
-  meteringPlugin,
   meteringApiFactory,
 } from '@internal/backstage-plugin-metering';
 
@@ -70,11 +70,11 @@ const entityPage = (
 
 // ── App ─────────────────────────────────────────────────────────────────────
 
-// meteringApiFactory is already a complete createApiFactory() result —
-// pass it directly to apis[], do NOT call .factory() on it.
 const app = createApp({
+  // Register the metering API factory directly — meteringPlugin (NFS) is excluded
+  // because createApp from @backstage/app-defaults uses the old plugin system.
   apis: [meteringApiFactory],
-  plugins: [catalogPlugin, userSettingsPlugin, meteringPlugin],
+  plugins: [catalogPlugin, userSettingsPlugin],
 });
 
 export default app.createRoot(
