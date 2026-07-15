@@ -43,13 +43,12 @@ const componentEntityPage = (
       </Grid>
     </EntityLayout.Route>
 
-    <EntitySwitch>
-      <EntitySwitch.Case if={hasK8sAnnotation}>
-        <EntityLayout.Route path="/metering" title="Metering">
-          <MeteringTabContent />
-        </EntityLayout.Route>
-      </EntitySwitch.Case>
-    </EntitySwitch>
+    {/* EntityLayout requires ALL direct children to be EntityLayout.Route.
+        MeteringTabContent internally renders MeteringAnnotationGuard when the
+        kubernetes annotation is absent, so no EntitySwitch wrapper is needed. */}
+    <EntityLayout.Route path="/metering" title="Metering">
+      <MeteringTabContent />
+    </EntityLayout.Route>
   </EntityLayout>
 );
 
