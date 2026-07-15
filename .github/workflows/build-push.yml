@@ -46,7 +46,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Enable Corepack (Yarn 4)
         run: corepack enable
@@ -61,7 +61,9 @@ jobs:
       - name: Install dependencies
         # Even with cache hits, resolving and linking ~1000 packages takes time.
         # A cold cache (e.g. first run, or after yarn.lock changes) takes 5–10 min.
-        run: yarn install --immutable
+        # --mode skip-build avoids compiling native modules (better-sqlite3, etc.)
+        # in CI — they are compiled inside the Docker build stage instead.
+        run: yarn install --immutable --mode skip-build
 
       # ── Phase 2: Build TypeScript + frontend ───────────────────────────
       # TypeScript compiles every plugin and package in the monorepo.
