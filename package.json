@@ -30,18 +30,23 @@
   "devDependencies": {
     "@backstage/cli": "^0.36.3",
     "@backstage/e2e-test-utils": "^0.1.1",
-    "@spotify/prettier-config": "^16.0.0",
     "concurrently": "^9.0.0",
     "node-gyp": "^11.0.0",
     "prettier": "^3.3.3",
     "typescript": "~5.7.0"
   },
-  "prettier": "@spotify/prettier-config",
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "printWidth": 100
+  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{json,md}": ["prettier --write"]
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }
