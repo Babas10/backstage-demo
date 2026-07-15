@@ -26,6 +26,16 @@
 # -----------------------------------------------------------------------------
 FROM node:22-bookworm-slim AS build
 
+# Install native build tools needed to compile modules like better-sqlite3
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 make g++ \
+  && rm -rf /var/lib/apt/lists/*
+
+# Enable Corepack so the correct Yarn version (4.x) is used —
+# without this, Docker falls back to the system Yarn 1 which cannot
+# handle a Yarn 4 workspace.
+RUN corepack enable
+
 WORKDIR /app
 
 # Copy workspace manifests first for better layer caching.
@@ -38,8 +48,7 @@ COPY plugins/metering-backend/package.json plugins/metering-backend/
 
 # Install ALL dependencies (dev + prod) — this is the slowest step.
 # In a real project this downloads hundreds of packages and can take 5–10 min.
-# --no-immutable is used here because the lockfile was generated on macOS;
-# Yarn regenerates platform-specific entries for Linux inside the container.
+# --no-immutable allows Yarn to adapt the lockfile for the Linux platform.
 RUN yarn install --no-immutable
 
 # Copy source
