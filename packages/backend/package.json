@@ -1,0 +1,36 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "private": true,
+  "backstage": {
+    "role": "backend"
+  },
+  "scripts": {
+    "start": "backstage-cli package start",
+    "build": "backstage-cli package build",
+    "lint": "backstage-cli package lint",
+    "test": "backstage-cli package test",
+    "clean": "backstage-cli package clean",
+    "migrate:create": "knex migrate:make --knexfile ../../knexfile.js"
+  },
+  "dependencies": {
+    "@backstage/backend-defaults": "^0.7.0",
+    "@backstage/backend-plugin-api": "^1.9.2",
+    "@backstage/catalog-model": "^1.9.0",
+    "@backstage/config": "^1.3.8",
+    "@backstage/plugin-app-backend": "^0.3.78",
+    "@backstage/plugin-auth-backend": "^0.23.2",
+    "@backstage/plugin-auth-backend-module-guest-provider": "^0.2.5",
+    "@backstage/plugin-catalog-backend": "^1.32.0",
+    "@backstage/plugin-catalog-backend-module-scaffolder-entity-model": "^0.2.4",
+    "@backstage/plugin-proxy-backend": "^0.5.8",
+    "@backstage/plugin-search-backend": "^1.5.20",
+    "@backstage/plugin-search-backend-module-catalog": "^0.2.5",
+    "@internal/backstage-plugin-metering-backend": "workspace:*",
+    "app": "workspace:*"
+  },
+  "devDependencies": {
+    "@backstage/cli": "^0.36.3",
+    "@types/node": "^22.0.0"
+  }
+}

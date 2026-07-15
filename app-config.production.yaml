@@ -1,0 +1,21 @@
+app:
+  baseUrl: ${APP_BASE_URL}
+
+backend:
+  baseUrl: ${BACKEND_BASE_URL}
+  listen:
+    port: 7007
+    host: 0.0.0.0
+  database:
+    client: pg
+    connection:
+      host: ${POSTGRES_HOST}
+      port: ${POSTGRES_PORT}
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+      database: backstage_demo
+
+auth:
+  environment: production
+  providers:
+    guest: {}

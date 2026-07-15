@@ -1,0 +1,54 @@
+app:
+  title: Backstage Demo
+  baseUrl: http://localhost:3000
+
+organization:
+  name: Demo Org
+
+backend:
+  baseUrl: http://localhost:7007
+  listen:
+    port: 7007
+    host: 0.0.0.0
+  csp:
+    connect-src: ["'self'", 'http:', 'https:']
+  cors:
+    origin: http://localhost:3000
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  database:
+    client: better-sqlite3
+    connection: ':memory:'
+
+integrations:
+  github:
+    - host: github.com
+
+auth:
+  environment: development
+  providers:
+    guest:
+      dangerouslyAllowOutsideDevelopment: true
+
+catalog:
+  import:
+    entityFilename: catalog-info.yaml
+  rules:
+    - allow: [Component, System, API, Group, User, Resource, Location]
+  locations:
+    - type: url
+      target: https://github.com/Babas10/developer-hub-env/blob/main/catalog/resource-burner.yaml
+      rules:
+        - allow: [Component]
+
+metering:
+  prometheusUrl: ${PROMETHEUS_URL}
+  bearerToken: ${METERING_PROMETHEUS_TOKEN}
+  chargeMode: max
+  windowHours: 24
+  retentionDays: 90
+  rollupAfterDays: 30
+  costModel:
+    cpuCostPerCorePerHour: 0.048
+    memoryCostPerGBPerHour: 0.006
+    gpuCostPerGpuPerHour: 0

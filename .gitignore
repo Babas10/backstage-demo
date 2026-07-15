@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.yarn/cache/
+.yarn/install-state.gz
+
+# Build outputs
+dist/
+dist-types/
+.cache/
+coverage/
+
+# Backstage runtime
+*.sqlite
+
+# Secrets
+.env
+.env.*
+
+# IDE
+.DS_Store
+.vscode/
+*.local
