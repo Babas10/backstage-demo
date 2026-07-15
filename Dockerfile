@@ -38,7 +38,9 @@ COPY plugins/metering-backend/package.json plugins/metering-backend/
 
 # Install ALL dependencies (dev + prod) — this is the slowest step.
 # In a real project this downloads hundreds of packages and can take 5–10 min.
-RUN yarn install --immutable
+# --no-immutable is used here because the lockfile was generated on macOS;
+# Yarn regenerates platform-specific entries for Linux inside the container.
+RUN yarn install --no-immutable
 
 # Copy source
 COPY . .
