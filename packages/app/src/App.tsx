@@ -17,10 +17,8 @@ import {
   MeteringSummaryCard,
   MeteringTabContent,
   meteringPlugin,
-  meteringApiRef,
   meteringApiFactory,
 } from '@internal/backstage-plugin-metering';
-import { createApiFactory, discoveryApiRef, fetchApiRef } from '@backstage/core-plugin-api';
 
 const K8S_NS_ANNOTATION = 'backstage.io/kubernetes-namespace';
 
@@ -75,15 +73,10 @@ const entityPage = (
 
 // ── App ─────────────────────────────────────────────────────────────────────
 
+// meteringApiFactory is already a complete createApiFactory() result —
+// pass it directly rather than wrapping it again.
 const app = createApp({
-  apis: [
-    createApiFactory({
-      api: meteringApiRef,
-      deps: { discoveryApi: discoveryApiRef, fetchApi: fetchApiRef },
-      factory: ({ discoveryApi, fetchApi }) =>
-        meteringApiFactory.factory({ discoveryApi, fetchApi }),
-    }),
-  ],
+  apis: [meteringApiFactory],
   plugins: [catalogPlugin, userSettingsPlugin, meteringPlugin],
 });
 
