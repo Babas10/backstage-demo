@@ -55,10 +55,10 @@ RUN yarn install --no-immutable
 COPY . .
 
 # Compile TypeScript and bundle the backend.
-# The backend build also includes the frontend static assets via
-# @backstage/plugin-app-backend serving the compiled React app.
-RUN yarn build:backend --config app-config.yaml
+# The backend package.json build script already includes --config ../../app-config.yaml.
+# The frontend app is built first so the backend can bundle its static assets.
 RUN yarn workspace app build
+RUN yarn workspace backend build
 
 # -----------------------------------------------------------------------------
 # Stage 2: Runtime
