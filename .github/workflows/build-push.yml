@@ -70,7 +70,7 @@ jobs:
       # Webpack bundles the entire React frontend into static assets.
       # This step alone can take 5–20 minutes for a full Backstage app.
       - name: Build backend
-        run: yarn build:backend --config app-config.yaml
+        run: yarn build:backend
 
       - name: Build frontend
         run: yarn workspace app build
