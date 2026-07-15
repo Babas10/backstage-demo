@@ -27,8 +27,7 @@ backend.add(import('@backstage/plugin-proxy-backend'));
 backend.add(import('@backstage/plugin-search-backend'));
 backend.add(import('@backstage/plugin-search-backend-module-catalog'));
 
-// Metering plugin — installed as a regular npm workspace package.
-// In standard Backstage, updating this plugin triggers a full image rebuild.
-backend.add(import('@internal/backstage-plugin-metering-backend'));
+// Metering plugin temporarily disabled for vanilla diagnostics.
+// backend.add(import('@internal/backstage-plugin-metering-backend'));
 
 backend.start();
