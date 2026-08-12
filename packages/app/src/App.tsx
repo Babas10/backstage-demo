@@ -21,16 +21,22 @@ import {
   techdocsPlugin,
 } from '@backstage/plugin-techdocs';
 
-// Metering plugin components
+// Metering plugin
 import {
   MeteringSummaryCard,
   MeteringTabContent,
   meteringApiFactory,
 } from '@internal/backstage-plugin-metering';
 
-// Note: @backstage/plugin-kubernetes and @backstage-community/plugin-catalog-graph
-// are installed as dependencies (adding to yarn install + build time) but not
-// imported here to avoid export-name compatibility issues.
+// Enterprise plugins installed but not imported to avoid export-name incompatibilities.
+// They are present in node_modules, contributing to yarn install and TypeScript
+// compilation time — which is the realistic enterprise scenario.
+// @backstage/plugin-kubernetes, @backstage-community/plugin-catalog-graph,
+// @backstage-community/plugin-github-actions, plugin-sonarqube,
+// plugin-azure-devops, plugin-jenkins, plugin-dynatrace, plugin-adr,
+// plugin-badges, plugin-cost-insights, plugin-lighthouse, plugin-sentry,
+// plugin-todo, plugin-kafka, plugin-newrelic-dashboard, plugin-graphiql,
+// plugin-code-coverage, plugin-github-pull-requests-board
 
 const K8S_NS_ANNOTATION = 'backstage.io/kubernetes-namespace';
 const hasK8sAnnotation = (e: { metadata: { annotations?: Record<string, string> } }) =>

@@ -3,8 +3,8 @@
  *
  * This is a standard Backstage monolithic backend. When the metering plugin
  * changes, the ENTIRE image (this file + all dependencies) must be rebuilt:
- *   1. yarn install     (~5–10 min)
- *   2. yarn build       (~15–30 min, TypeScript + webpack)
+ *   1. yarn install     (~10–15 min cold, downloading 700+ packages)
+ *   2. yarn build       (~15–30 min TypeScript + webpack across 30+ plugins)
  *   3. docker build     (~5–10 min, assembles ~1.5 GB image)
  *   4. docker push      (~3–8 min, uploads ~1.5 GB)
  *
@@ -25,13 +25,19 @@ backend.add(import('@backstage/plugin-proxy-backend'));
 backend.add(import('@backstage/plugin-search-backend'));
 backend.add(import('@backstage/plugin-search-backend-module-catalog'));
 
-// Additional enterprise plugins
+// Standard enterprise backend plugins
 backend.add(import('@backstage/plugin-kubernetes-backend'));
 backend.add(import('@backstage/plugin-scaffolder-backend'));
 backend.add(import('@backstage/plugin-techdocs-backend'));
 backend.add(import('@backstage/plugin-permission-backend'));
 backend.add(import('@backstage/plugin-permission-backend-module-allow-all-policy'));
 backend.add(import('@backstage/plugin-search-backend-module-techdocs'));
+
+// Community backend plugins
+backend.add(import('@backstage-community/plugin-sonarqube-backend'));
+backend.add(import('@backstage-community/plugin-azure-devops-backend'));
+backend.add(import('@backstage-community/plugin-todo-backend'));
+backend.add(import('@backstage-community/plugin-code-coverage-backend'));
 
 // Metering plugin — installed as a regular npm workspace package.
 // In standard Backstage, updating this plugin triggers a full image rebuild.
