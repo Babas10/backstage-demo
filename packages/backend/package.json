@@ -27,7 +27,13 @@
     "@backstage/plugin-search-backend": "^2.1.4",
     "@backstage/plugin-search-backend-module-catalog": "^0.3.17",
     "@internal/backstage-plugin-metering-backend": "workspace:*",
-    "app": "workspace:*"
+    "app": "workspace:*",
+    "@backstage/plugin-kubernetes-backend": "^0.22.0",
+    "@backstage/plugin-scaffolder-backend": "^1.28.0",
+    "@backstage/plugin-techdocs-backend": "^1.11.0",
+    "@backstage/plugin-permission-backend": "^0.5.50",
+    "@backstage/plugin-permission-backend-module-allow-all-policy": "^0.1.22",
+    "@backstage/plugin-search-backend-module-techdocs": "^0.2.7"
   },
   "devDependencies": {
     "@backstage/cli": "^0.36.3",
