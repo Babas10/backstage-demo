@@ -12,11 +12,12 @@ import {
 } from '@backstage/plugin-catalog';
 import { Grid } from '@material-ui/core';
 import { userSettingsPlugin, UserSettingsPage } from '@backstage/plugin-user-settings';
-
-// Metering plugin components — work as regular React components regardless of plugin system.
-// Note: meteringPlugin (createFrontendPlugin/NFS) is intentionally NOT passed to createApp()
-// because @backstage/app-defaults uses the old plugin system and mixing NFS plugins causes
-// a runtime crash. The API factory and components are registered manually below.
+import { orgPlugin } from '@backstage/plugin-org';
+import { TechRadarPage, techRadarPlugin } from '@backstage/plugin-tech-radar';
+import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
+import { TechDocsIndexPage, TechDocsReaderPage, techdocsPlugin } from '@backstage/plugin-techdocs';
+import { EntityKubernetesContent, kubernetesPlugin } from '@backstage/plugin-kubernetes';
+import { CatalogGraphPage, CatalogGraphCard, catalogGraphPlugin } from '@backstage-community/plugin-catalog-graph';
 import {
   MeteringSummaryCard,
   MeteringTabContent,
@@ -26,8 +27,6 @@ import {
 const K8S_NS_ANNOTATION = 'backstage.io/kubernetes-namespace';
 const hasK8sAnnotation = (e: { metadata: { annotations?: Record<string, string> } }) =>
   Boolean(e.metadata.annotations?.[K8S_NS_ANNOTATION]);
-
-// ── Entity page ─────────────────────────────────────────────────────────────
 
 const componentEntityPage = (
   <EntityLayout>
@@ -40,14 +39,16 @@ const componentEntityPage = (
             </Grid>
           </EntitySwitch.Case>
         </EntitySwitch>
+        <Grid item xs={12} md={6}>
+          <CatalogGraphCard />
+        </Grid>
       </Grid>
     </EntityLayout.Route>
-
-    {/* EntityLayout requires ALL direct children to be EntityLayout.Route.
-        MeteringTabContent internally renders MeteringAnnotationGuard when the
-        kubernetes annotation is absent, so no EntitySwitch wrapper is needed. */}
     <EntityLayout.Route path="/metering" title="Metering">
       <MeteringTabContent />
+    </EntityLayout.Route>
+    <EntityLayout.Route path="/kubernetes" title="Kubernetes">
+      <EntityKubernetesContent />
     </EntityLayout.Route>
   </EntityLayout>
 );
@@ -67,13 +68,18 @@ const entityPage = (
   </EntitySwitch>
 );
 
-// ── App ─────────────────────────────────────────────────────────────────────
-
 const app = createApp({
-  // Register the metering API factory directly — meteringPlugin (NFS) is excluded
-  // because createApp from @backstage/app-defaults uses the old plugin system.
   apis: [meteringApiFactory],
-  plugins: [catalogPlugin, userSettingsPlugin],
+  plugins: [
+    catalogPlugin,
+    userSettingsPlugin,
+    orgPlugin,
+    techRadarPlugin,
+    scaffolderPlugin,
+    techdocsPlugin,
+    kubernetesPlugin,
+    catalogGraphPlugin,
+  ],
 });
 
 export default app.createRoot(
@@ -85,6 +91,11 @@ export default app.createRoot(
         {entityPage}
       </Route>
       <Route path="/settings" element={<UserSettingsPage />} />
+      <Route path="/tech-radar" element={<TechRadarPage />} />
+      <Route path="/create" element={<ScaffolderPage />} />
+      <Route path="/docs" element={<TechDocsIndexPage />} />
+      <Route path="/docs/:namespace/:kind/:name/*" element={<TechDocsReaderPage />} />
+      <Route path="/catalog-graph" element={<CatalogGraphPage />} />
     </FlatRoutes>
   </AppRouter>,
 );
