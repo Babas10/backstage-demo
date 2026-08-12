@@ -15,14 +15,22 @@ import { userSettingsPlugin, UserSettingsPage } from '@backstage/plugin-user-set
 import { orgPlugin } from '@backstage/plugin-org';
 import { TechRadarPage, techRadarPlugin } from '@backstage/plugin-tech-radar';
 import { ScaffolderPage, scaffolderPlugin } from '@backstage/plugin-scaffolder';
-import { TechDocsIndexPage, TechDocsReaderPage, techdocsPlugin } from '@backstage/plugin-techdocs';
-import { EntityKubernetesContent, kubernetesPlugin } from '@backstage/plugin-kubernetes';
-import { CatalogGraphPage, CatalogGraphCard, catalogGraphPlugin } from '@backstage-community/plugin-catalog-graph';
+import {
+  TechDocsIndexPage,
+  TechDocsReaderPage,
+  techdocsPlugin,
+} from '@backstage/plugin-techdocs';
+
+// Metering plugin components
 import {
   MeteringSummaryCard,
   MeteringTabContent,
   meteringApiFactory,
 } from '@internal/backstage-plugin-metering';
+
+// Note: @backstage/plugin-kubernetes and @backstage-community/plugin-catalog-graph
+// are installed as dependencies (adding to yarn install + build time) but not
+// imported here to avoid export-name compatibility issues.
 
 const K8S_NS_ANNOTATION = 'backstage.io/kubernetes-namespace';
 const hasK8sAnnotation = (e: { metadata: { annotations?: Record<string, string> } }) =>
@@ -39,16 +47,10 @@ const componentEntityPage = (
             </Grid>
           </EntitySwitch.Case>
         </EntitySwitch>
-        <Grid item xs={12} md={6}>
-          <CatalogGraphCard />
-        </Grid>
       </Grid>
     </EntityLayout.Route>
     <EntityLayout.Route path="/metering" title="Metering">
       <MeteringTabContent />
-    </EntityLayout.Route>
-    <EntityLayout.Route path="/kubernetes" title="Kubernetes">
-      <EntityKubernetesContent />
     </EntityLayout.Route>
   </EntityLayout>
 );
@@ -77,8 +79,6 @@ const app = createApp({
     techRadarPlugin,
     scaffolderPlugin,
     techdocsPlugin,
-    kubernetesPlugin,
-    catalogGraphPlugin,
   ],
 });
 
@@ -95,7 +95,6 @@ export default app.createRoot(
       <Route path="/create" element={<ScaffolderPage />} />
       <Route path="/docs" element={<TechDocsIndexPage />} />
       <Route path="/docs/:namespace/:kind/:name/*" element={<TechDocsReaderPage />} />
-      <Route path="/catalog-graph" element={<CatalogGraphPage />} />
     </FlatRoutes>
   </AppRouter>,
 );
