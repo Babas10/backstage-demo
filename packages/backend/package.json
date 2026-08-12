@@ -36,8 +36,8 @@
     "@backstage/plugin-search-backend-module-techdocs": "^0.4.16",
     "@backstage-community/plugin-sonarqube-backend": "^1.1.1",
     "@backstage-community/plugin-azure-devops-backend": "^0.31.0",
-    "@backstage-community/plugin-todo-backend": "^0.23.0",
-    "@backstage-community/plugin-code-coverage-backend": "^0.14.1"
+    "@backstage-community/plugin-todo-backend": "^0.24.0",
+    "@backstage-community/plugin-code-coverage-backend": "^0.16.1"
   },
   "devDependencies": {
     "@backstage/cli": "^0.36.3",
