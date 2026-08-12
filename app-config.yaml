@@ -52,16 +52,3 @@ metering:
     cpuCostPerCorePerHour: 0.048
     memoryCostPerGBPerHour: 0.006
     gpuCostPerGpuPerHour: 0
-
-# Stub configs required by installed plugins (not functionally configured)
-costInsights:
-  engineerCost: 200000
-  products: {}
-  metrics: {}
-  currencies: []
-
-lighthouse:
-  baseUrl: http://localhost:3003
-
-sentry:
-  organization: demo-org
